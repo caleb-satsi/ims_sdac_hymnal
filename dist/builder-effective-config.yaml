@@ -1,0 +1,43 @@
+directories:
+  output: dist
+  buildResources: build
+appId: com.imssdac.hymnal
+productName: IMS SDAC Hymnal
+files:
+  - filter:
+      - main.js
+      - app/**/*
+      - build/icon.png
+win:
+  target:
+    - target: appx
+      arch:
+        - x64
+        - arm64
+  icon: build/icon.ico
+appx:
+  applicationId: IMSSDACHymnal
+  identityName: IMSSDACHymnal
+  publisher: CN=REPLACE_WITH_YOUR_PARTNER_CENTER_PUBLISHER_ID
+  publisherDisplayName: CS Poppo
+  backgroundColor: '#153656'
+  showNameOnTiles: true
+  languages:
+    - en-US
+mac:
+  target:
+    - target: dmg
+      arch:
+        - universal
+    - target: mas
+      arch:
+        - universal
+  icon: build/icon.icns
+  category: public.app-category.music
+mas:
+  hardenedRuntime: false
+  entitlements: build/entitlements.mas.plist
+  entitlementsInherit: build/entitlements.mas.plist
+dmg:
+  title: IMS SDAC Hymnal
+electronVersion: 31.7.7

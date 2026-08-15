@@ -1,0 +1,557 @@
+/* ============================================================
+   IMS SDAC Hymnal — Web Edition
+   Design: bound hymnal cover (navy + brass) opening onto
+   warm parchment pages for the reading experience.
+   ============================================================ */
+
+:root{
+  --navy-900:#0e2c47;
+  --navy-800:#153656;
+  --navy-700:#1d4468;
+  --brass-500:#c68a3e;
+  --brass-400:#dba55f;
+  --brass-100:#f2ddb8;
+  --parchment:#f7f0dd;
+  --parchment-hi:#fbf6ea;
+  --parchment-line:#e0d1a6;
+  --ink-900:#2a2116;
+  --ink-700:#4a3f2e;
+  --ink-500:#7a6c53;
+  --paper-shadow: 0 18px 40px -20px rgba(20,20,10,.35);
+
+  --bg-app:#eee6d3;
+  --surface:#ffffff;
+  --surface-2:#f4ede0;
+  --border:#e2d6b8;
+  --text-1:#241d13;
+  --text-2:#5c503b;
+  --text-3:#9a8b6c;
+
+  --font-display:"Fraunces", Georgia, "Times New Roman", serif;
+  --font-body:"Source Serif 4", Georgia, serif;
+  --font-ui:"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  --radius-lg:18px;
+  --radius-md:12px;
+  --radius-sm:8px;
+
+  --lyric-size:17px;
+  color-scheme: light;
+}
+
+html.dark{
+  color-scheme: dark;
+  --bg-app:#0b1522;
+  --surface:#122032;
+  --surface-2:#0f1c2c;
+  --border:#223449;
+  --text-1:#f1e9d6;
+  --text-2:#c4b998;
+  --text-3:#7d8ea3;
+
+  --parchment:#17222f;
+  --parchment-hi:#1a2634;
+  --parchment-line:#2c3d4f;
+  --ink-900:#efe6cf;
+  --ink-700:#d8cca8;
+  --ink-500:#9aa9bb;
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  background:var(--bg-app);
+  color:var(--text-1);
+  font-family:var(--font-ui);
+  -webkit-font-smoothing:antialiased;
+  transition:background .25s ease, color .25s ease;
+}
+
+button{ font-family:inherit; cursor:pointer; }
+input, select{ font-family:inherit; }
+ul{ list-style:none; margin:0; padding:0; }
+
+#app{
+  max-width:640px;
+  margin:0 auto;
+  min-height:100vh;
+  min-height:100dvh;
+  display:flex;
+  flex-direction:column;
+  background:var(--bg-app);
+  position:relative;
+}
+
+/* ============ COVER BAR ============ */
+.cover-bar{
+  background:linear-gradient(180deg, var(--navy-700), var(--navy-900));
+  color:var(--brass-100);
+  padding-top:env(safe-area-inset-top);
+  position:sticky;
+  top:0;
+  z-index:30;
+  box-shadow:0 6px 18px -8px rgba(0,0,0,.45);
+  border-bottom:1px solid rgba(198,138,62,.35);
+}
+.cover-bar__inner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:14px 14px;
+}
+.cover-bar__title{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  justify-content:center;
+  flex:1;
+}
+.cover-bar__title .crest{
+  color:var(--brass-500);
+  font-size:16px;
+  transform:translateY(-1px);
+}
+.cover-bar__title h1{
+  margin:0;
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:19px;
+  letter-spacing:.015em;
+  color:#fbf2de;
+}
+.icon-btn{
+  background:transparent;
+  border:none;
+  color:var(--brass-100);
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:.9;
+  transition:background .15s;
+}
+.icon-btn:hover{ background:rgba(219,165,95,.15); }
+.icon-btn:active{ background:rgba(219,165,95,.25); }
+
+/* ============ MAIN / VIEWS ============ */
+main#views{
+  flex:1;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+}
+.view{
+  display:none;
+  padding:18px 16px 28px;
+  animation:fadeIn .22s ease;
+}
+.view--active{ display:block; }
+@keyframes fadeIn{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;} }
+
+.section-heading{ margin: 4px 2px 16px; }
+.section-heading--tight{ margin-top:28px; }
+.section-heading h2{
+  font-family:var(--font-display);
+  font-size:23px;
+  margin:0 0 3px;
+  color:var(--text-1);
+}
+.section-heading p{
+  margin:0;
+  color:var(--text-3);
+  font-size:13.5px;
+}
+
+/* ============ TOOLBAR (list filters) ============ */
+.toolbar{
+  display:flex;
+  gap:8px;
+  margin-bottom:10px;
+}
+.select-wrap{
+  flex:0 0 auto;
+  max-width:42%;
+}
+#categorySelect{
+  width:100%;
+  height:40px;
+  padding:0 10px;
+  border-radius:var(--radius-sm);
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--text-1);
+  font-size:13px;
+  appearance:none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--text-3) 50%), linear-gradient(135deg, var(--text-3) 50%, transparent 50%);
+  background-position: calc(100% - 14px) 17px, calc(100% - 9px) 17px;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat:no-repeat;
+}
+.search-wrap{
+  flex:1;
+  position:relative;
+  display:flex;
+  align-items:center;
+}
+.search-icon{
+  position:absolute;
+  left:12px;
+  color:var(--text-3);
+  pointer-events:none;
+}
+#searchInput{
+  width:100%;
+  height:40px;
+  padding:0 12px 0 34px;
+  border-radius:var(--radius-sm);
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--text-1);
+  font-size:14px;
+}
+#searchInput::placeholder{ color:var(--text-3); }
+#categorySelect:focus, #searchInput:focus{
+  outline:none;
+  border-color:var(--brass-500);
+  box-shadow:0 0 0 3px rgba(198,138,62,.18);
+}
+
+.result-count{
+  margin:0 2px 10px;
+  font-size:12px;
+  color:var(--text-3);
+  letter-spacing:.02em;
+}
+
+/* ============ HYMN LIST ============ */
+.hymn-list{ display:flex; flex-direction:column; gap:8px; }
+.hymn-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-md);
+  padding:10px 12px;
+  transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+}
+.hymn-item:active{ transform:scale(.985); }
+.hymn-item:hover{ border-color:var(--brass-400); box-shadow:0 4px 14px -8px rgba(0,0,0,.25); }
+
+.hymn-item__num{
+  flex:0 0 auto;
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  background:radial-gradient(circle at 32% 28%, var(--brass-400), var(--brass-500) 65%, #a06f2c 100%);
+  color:#33210a;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:13.5px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.35);
+}
+.hymn-item__body{
+  flex:1;
+  min-width:0;
+  text-align:left;
+  background:none;
+  border:none;
+  padding:0;
+  color:inherit;
+}
+.hymn-item__title{
+  font-family:var(--font-body);
+  font-size:15.5px;
+  font-weight:600;
+  color:var(--text-1);
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.hymn-item__sub{
+  font-size:12px;
+  color:var(--text-3);
+  margin-top:2px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.hymn-item__star{
+  flex:0 0 auto;
+  background:transparent;
+  border:none;
+  color:var(--border);
+  width:30px;
+  height:30px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.hymn-item__star.is-fav{ color:var(--brass-500); }
+.hymn-item__star svg path{ fill: currentColor; fill-opacity:0; transition:fill-opacity .15s, color .15s; }
+.hymn-item__star.is-fav svg path{ fill-opacity:1; }
+
+.empty-state{
+  text-align:center;
+  padding:50px 20px;
+  color:var(--text-3);
+}
+.empty-state__glyph{
+  display:block;
+  font-size:28px;
+  color:var(--brass-500);
+  margin-bottom:10px;
+}
+.empty-state p{ margin:0; font-size:14px; line-height:1.6; }
+
+/* ============ SETTINGS ============ */
+.settings-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:6px 16px;
+  margin-bottom:8px;
+}
+.settings-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:14px 0;
+  border-bottom:1px solid var(--border);
+}
+.settings-row:last-child{ border-bottom:none; }
+.settings-row--stack{ align-items:center; }
+.settings-label{ font-size:14.5px; font-weight:600; color:var(--text-1); }
+.settings-sub{ font-size:12px; color:var(--text-3); margin-top:2px; }
+
+.switch{
+  width:46px;
+  height:27px;
+  border-radius:999px;
+  border:none;
+  background:var(--border);
+  position:relative;
+  padding:0;
+  flex:0 0 auto;
+  transition:background .18s ease;
+}
+.switch[aria-checked="true"]{ background:var(--brass-500); }
+.switch__knob{
+  position:absolute;
+  top:2.5px; left:2.5px;
+  width:22px; height:22px;
+  border-radius:50%;
+  background:#fff;
+  box-shadow:0 1px 3px rgba(0,0,0,.3);
+  transition:transform .18s ease;
+}
+.switch[aria-checked="true"] .switch__knob{ transform:translateX(19px); }
+
+.fontsize-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:13px;
+  color:var(--text-2);
+  font-variant-numeric:tabular-nums;
+}
+.pill-btn{
+  background:var(--surface-2);
+  border:1px solid var(--border);
+  color:var(--text-1);
+  border-radius:8px;
+  padding:6px 11px;
+  font-size:13px;
+  font-weight:600;
+}
+.pill-btn:active{ background:var(--brass-100); }
+.pill-btn--sm{ padding:5px 9px; font-size:12px; }
+
+.about-card p{ margin:0 0 8px; font-size:13.5px; color:var(--text-2); line-height:1.6; }
+.about-card p:last-child{ margin-bottom:0; }
+.about-card strong{ color:var(--text-1); }
+.about-note{ font-size:12.5px !important; color:var(--text-3) !important; }
+
+/* ============ HYMN DETAIL (parchment page) ============ */
+#view-detail{ padding:14px 12px 10px; }
+
+.page{
+  background:linear-gradient(180deg, var(--parchment-hi), var(--parchment));
+  border:1px solid var(--parchment-line);
+  border-radius:var(--radius-lg);
+  padding:22px 20px 26px;
+  box-shadow:var(--paper-shadow);
+  position:relative;
+  min-height:60vh;
+}
+.page::before{
+  /* faux page-edge / gutter shading for a book feel */
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  box-shadow: inset 0 0 40px -18px rgba(60,40,10,.35);
+  pointer-events:none;
+}
+
+.page__topline{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  margin-bottom:6px;
+}
+.plate{
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  background:radial-gradient(circle at 32% 28%, var(--brass-400), var(--brass-500) 65%, #a06f2c 100%);
+  color:#33210a;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:16px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.4), 0 3px 8px -3px rgba(0,0,0,.4);
+}
+.star-btn{
+  background:transparent;
+  border:none;
+  color:var(--text-3);
+  width:38px; height:38px;
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+}
+.star-btn svg path{ fill:currentColor; fill-opacity:0; transition:fill-opacity .15s, color .15s; }
+.star-btn.is-fav{ color:var(--brass-500); }
+.star-btn.is-fav svg path{ fill-opacity:1; }
+
+.page__title{
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:25px;
+  line-height:1.25;
+  margin:6px 0 4px;
+  color:var(--ink-900);
+}
+.page__meta{
+  margin:0 0 18px;
+  font-size:12.5px;
+  font-style:italic;
+  color:var(--ink-500);
+  line-height:1.6;
+}
+
+.page__lyrics{
+  font-family:var(--font-body);
+  color:var(--ink-900);
+  font-size:var(--lyric-size);
+  line-height:1.8;
+}
+.verse-block{ margin-bottom:20px; }
+.verse-block__label{
+  font-family:var(--font-ui);
+  font-size:10.5px;
+  font-weight:700;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  color:var(--brass-500);
+  margin-bottom:5px;
+}
+.verse-block__text{
+  white-space:pre-line;
+  margin:0;
+}
+.verse-block--chorus{
+  padding:12px 14px;
+  border-left:2px solid var(--brass-400);
+  background:rgba(198,138,62,.07);
+  border-radius:0 8px 8px 0;
+  font-style:italic;
+}
+
+.page__footer{
+  margin-top:22px;
+  padding-top:14px;
+  border-top:1px solid var(--parchment-line);
+  font-size:12px;
+  color:var(--ink-500);
+  line-height:1.7;
+}
+.page__footer strong{ color:var(--ink-700); }
+
+.page-nav{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  padding:14px 4px 4px;
+}
+.page-nav__btn{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  background:transparent;
+  border:none;
+  color:var(--text-2);
+  font-size:13px;
+  font-weight:600;
+  padding:8px 6px;
+}
+.page-nav__btn:disabled{ opacity:.3; }
+.page-nav__btn--next{ flex-direction:row-reverse; }
+.page-nav__size{ display:flex; gap:6px; }
+
+/* ============ TAB BAR ============ */
+.tabbar{
+  display:flex;
+  border-top:1px solid var(--border);
+  background:var(--surface);
+  padding:6px 6px calc(6px + env(safe-area-inset-bottom));
+  position:sticky;
+  bottom:0;
+  z-index:30;
+}
+.tab{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:3px;
+  background:transparent;
+  border:none;
+  padding:7px 4px 5px;
+  color:var(--text-3);
+  border-radius:10px;
+  transition:color .15s;
+}
+.tab span{ font-size:11px; font-weight:600; font-family:var(--font-ui); }
+.tab--active{ color:var(--navy-700); }
+html.dark .tab--active{ color:var(--brass-400); }
+.tab--active svg{ filter:drop-shadow(0 0 0 currentColor); }
+
+/* ============ RESPONSIVE ============ */
+@media (min-width:520px){
+  .cover-bar__title h1{ font-size:21px; }
+  .page__title{ font-size:28px; }
+}
+
+::selection{ background:var(--brass-100); color:var(--ink-900); }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .view, .hymn-item{ animation:none !important; transition:none !important; }
+}
+
+/* Focus visibility for a11y */
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible{
+  outline:2px solid var(--brass-500);
+  outline-offset:2px;
+}
