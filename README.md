@@ -1,4 +1,4 @@
-# IMS SDAC Hymnal — Desktop Edition
+# International Hymnal (SDAC) — Desktop Edition
 
 This app is a web app in [Electron](https://www.electronjs.org/) so it runs
 as a native window on Windows and macOS, and can be packaged for the
