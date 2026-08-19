@@ -1,6 +1,6 @@
 # International Hymnal (SDAC) — Desktop Edition
 
-This app is a web app in [Electron](https://www.electronjs.org/) so it runs
+This wraps the web app in [Electron](https://www.electronjs.org/) so it runs
 as a native window on Windows and macOS, and can be packaged for the
 **Microsoft Store** (Windows) and the **Mac App Store** (macOS).
 
@@ -9,7 +9,8 @@ as a native window on Windows and macOS, and can be packaged for the
 The Microsoft Store only distributes **Windows** apps. It does not install
 software on macOS. Apple's equivalent is the **Mac App Store**, which is a
 separate submission with its own developer account, signing, and review
-process.
+process. So "publish to Microsoft Store for PC and macOS" is really two
+independent jobs:
 
 | Platform | Store | Format | Requires |
 |---|---|---|---|
@@ -23,12 +24,41 @@ needs a $99/yr cert to notarize it, or Gatekeper will warn people on install).
 This project is set up to build **either path** for macOS, and the Store path
 for Windows.
 
+## Presentation mode (projecting for the congregation)
+
+Open any hymn, then click **Present** in the top-right of the hymn page.
+This opens two windows:
+
+- **Presenter Console** — stays on your own screen. Shows the current
+  and next slide, a clickable list of every verse/chorus for quick jumps,
+  Previous/Next controls, and a black/white screen toggle (for prayer,
+  announcements, etc.). Keyboard shortcuts: **←/→** or **↑/↓** to move
+  between slides, **B** for black screen, **W** for white screen, **Esc**
+  to exit.
+- **Congregation Display** — large, high-contrast lyrics meant for a
+  projector. If a second monitor/projector is connected, it goes
+  fullscreen there automatically; if not, it opens as a regular window you
+  can drag onto the projector once you connect one.
+
+While presenting, you can switch to a different hymn from the main window
+and click **Present** again — both presentation windows update instantly
+instead of opening a duplicate. Closing the Presenter Console (or pressing
+**Esc**) ends the presentation and closes the display window too.
+
 ## What's in this folder
 
 ```
-main.js         — Electron entry point (opens the hymnal in a native window)
+main.js         — Electron entry point (main window, Presenter Console
+                   window, Congregation Display window, and the IPC that
+                   keeps them all in sync)
+preload.js      — secure bridge exposing window.hymnalBridge to each window
 package.json    — electron-builder config for both stores
-app/            — the hymnal web app itself (same files as the browser version)
+app/            — the hymnal itself:
+  index.html/app.js/styles.css     — the main browsing window
+  control.html/control.js/control.css     — Presenter Console
+  presentation.html/presentation.js/presentation.css — Congregation Display
+  hymn-utils.js   — small helper shared by the console and display
+  data.js         — all hymn/category data
 build/icon.*    — app icons (.ico for Windows, .icns for macOS, .png for the window)
 build/entitlements.mas.plist — required sandbox entitlements for Mac App Store
 ```
@@ -55,7 +85,7 @@ Do this step on Windows (electron-builder's `appx` target requires the
 Windows SDK, so it won't build on macOS/Linux).
 
 1. **Register a free Microsoft Partner Center account**: https://partner.microsoft.com/dashboard
-   Reserve your app name (e.g. "IMS SDAC Hymnal") — this gives you a
+   Reserve your app name (e.g. "International Hymnal (SDAC)") — this gives you a
    Package/Identity Name and Publisher ID.
 2. In `package.json`, replace the two placeholders under `"appx"`:
    - `publisher`: the `CN=...` value shown on your app's Identity page in
@@ -104,6 +134,44 @@ around that for App Store submission).
    and `APPLE_TEAM_ID` environment variables — see the
    [electron-builder notarization docs](https://www.electron.build/configuration/mac#notarization)).
 4. Host the `.dmg` yourself; people download and drag it to Applications.
+
+## Fixing a Microsoft Store certification rejection
+
+If Partner Center comes back with "Attention needed," here's how to resolve
+the most common issues with this project:
+
+**10.2.4.2 — "Your product contains drivers that have not been provided by
+Microsoft"**
+This is a known Electron false-positive: two bundled Chromium files
+(`vk_swiftshader.dll`, `vulkan-1.dll`) are software Vulkan/graphics-driver
+replacements, and Microsoft's scanner flags them automatically. This project
+already removes them at build time via `build/afterPack.js` and disables the
+software rasterizer in `main.js`, so a fresh `npm run dist:win` should no
+longer trigger this. If it still gets flagged after that, it's likely a
+different file — check the exact filename in the new certification report,
+and either exclude it the same way, or (if it's a dependency you genuinely
+need) disclose it up front in Partner Center's submission under **Properties
+→ Notes for certification**, per Microsoft's guidance.
+
+**10.1.1.1 — "Product name contains the title of another piece of software
+or service"**
+Rename the app so it's clearly distinct from any existing app/organization
+name. Update the `productName` field in `package.json` and the app's title
+in Partner Center's Store Listing. Avoid initialisms tied to an existing
+organization or product unless you're formally publishing on their behalf.
+
+**10.1.4.3 — Description too thin**
+Paste a real description (2+ sentences, specific to what the app does) into
+the Store Listing's Description field — not just the app name. Example:
+
+> A digital hymnal for reading and searching hymns on the go. Browse by
+> category or search by number, title, or author, save favorites for quick
+> access, and adjust text size or switch to dark mode for comfortable
+> reading. All hymn lyrics are stored on your device, so the app works
+> fully offline.
+
+Feel free to adjust the wording, but keep it specific and a few sentences
+long — a single phrase or just the app name will fail this check again.
 
 ## Notes
 

@@ -1,36 +1,26 @@
 {
-  "name": "ims-sdac-hymnal",
-  "productName": "IMS SDAC Hymnal",
+  "name": "international-hymnal-sdac",
+  "productName": "International Hymnal (SDAC)",
   "version": "1.0.0",
-  "description": "IMS SDAC Hymnal — desktop edition",
+  "description": "International Hymnal (SDAC) — desktop edition",
   "author": "Caleb Satsi Agbefia",
   "main": "main.js",
   "private": true,
   "scripts": {
-    "start": "electron-forge start",
+    "start": "electron .",
     "dist:win": "electron-builder --win appx",
     "dist:win-exe": "electron-builder --win nsis",
     "dist:mac": "electron-builder --mac dmg",
     "dist:mac-store": "electron-builder --mac mas",
-    "dist": "electron-builder -mw",
-    "package": "electron-forge package",
-    "make": "electron-forge make"
+    "dist": "electron-builder -mw"
   },
   "devDependencies": {
-    "@electron-forge/cli": "^7.11.2",
-    "@electron-forge/maker-deb": "^7.11.2",
-    "@electron-forge/maker-rpm": "^7.11.2",
-    "@electron-forge/maker-squirrel": "^7.11.2",
-    "@electron-forge/maker-zip": "^7.11.2",
-    "@electron-forge/plugin-auto-unpack-natives": "^7.11.2",
-    "@electron-forge/plugin-fuses": "^7.11.2",
-    "@electron/fuses": "^1.8.0",
     "electron": "^31.0.0",
-    "electron-builder": "^26.15.3"
+    "electron-builder": "^24.13.3"
   },
   "build": {
-    "appId": "com.imssdac.hymnal",
-    "productName": "IMS SDAC Hymnal",
+    "appId": "com.internationalhymnalsdac.app",
+    "productName": "International Hymnal (SDAC)",
     "files": [
       "main.js",
       "app/**/*",
@@ -40,43 +30,26 @@
       "output": "dist",
       "buildResources": "build"
     },
+    "afterPack": "build/afterPack.js",
     "win": {
       "target": [
-        {
-          "target": "appx",
-          "arch": [
-            "x64",
-            "arm64"
-          ]
-        }
+        { "target": "appx", "arch": ["x64", "arm64"] }
       ],
       "icon": "build/icon.ico"
     },
     "appx": {
-      "applicationId": "IMSSDACHymnal",
-      "identityName": "IMSSDACHymnal",
+      "applicationId": "InternationalHymnalSDAC",
+      "identityName": "InternationalHymnalSDAC",
       "publisher": "CN=REPLACE_WITH_YOUR_PARTNER_CENTER_PUBLISHER_ID",
-      "publisherDisplayName": "CS Poppo",
+      "publisherDisplayName": "REPLACE_WITH_YOUR_PUBLISHER_DISPLAY_NAME",
       "backgroundColor": "#153656",
       "showNameOnTiles": true,
-      "languages": [
-        "en-US"
-      ]
+      "languages": ["en-US"]
     },
     "mac": {
       "target": [
-        {
-          "target": "dmg",
-          "arch": [
-            "universal"
-          ]
-        },
-        {
-          "target": "mas",
-          "arch": [
-            "universal"
-          ]
-        }
+        { "target": "dmg", "arch": ["universal"] },
+        { "target": "mas", "arch": ["universal"] }
       ],
       "icon": "build/icon.icns",
       "category": "public.app-category.music"
@@ -87,7 +60,7 @@
       "entitlementsInherit": "build/entitlements.mas.plist"
     },
     "dmg": {
-      "title": "IMS SDAC Hymnal"
+      "title": "International Hymnal (SDAC)"
     }
   }
 }
