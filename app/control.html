@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Presenter Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="control.css">
+</head>
+<body>
+
+<div id="console">
+
+  <header class="console-bar">
+    <div class="console-bar__hymn">
+      <span class="console-bar__num" id="hymnNum">—</span>
+      <div>
+        <div class="console-bar__title" id="hymnTitle">Choose a hymn to present</div>
+        <div class="console-bar__sub" id="hymnSub"></div>
+      </div>
+    </div>
+    <div class="console-bar__status" id="displayStatus"></div>
+    <button class="exit-btn" id="exitBtn">
+      <svg viewBox="0 0 24 24" width="16" height="16"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      Exit Presentation
+    </button>
+  </header>
+
+  <main class="console-main">
+    <aside class="verse-rail" id="verseRail"></aside>
+
+    <section class="stage">
+      <div class="stage__label">Now showing</div>
+      <div class="stage__now" id="nowSlide">
+        <div class="stage__now-tag" id="nowTag">—</div>
+        <p class="stage__now-text" id="nowText"></p>
+      </div>
+
+      <div class="stage__label stage__label--next">Up next</div>
+      <div class="stage__next" id="nextSlide">
+        <div class="stage__next-tag" id="nextTag">—</div>
+        <p class="stage__next-text" id="nextText"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="console-controls">
+    <button class="ctrl-btn" id="prevBtn">
+      <svg viewBox="0 0 24 24" width="18" height="18"><path d="M15 4l-8 8 8 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Previous
+    </button>
+
+    <div class="ctrl-center">
+      <button class="ctrl-pill" id="blankBlackBtn" title="Black screen (B)">Black screen</button>
+      <button class="ctrl-pill" id="blankWhiteBtn" title="White screen (W)">White screen</button>
+      <span class="ctrl-count" id="ctrlCount">0 / 0</span>
+    </div>
+
+    <button class="ctrl-btn ctrl-btn--next" id="nextBtn">
+      Next
+      <svg viewBox="0 0 24 24" width="18" height="18"><path d="M9 4l8 8-8 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </footer>
+
+  <div class="no-hymn-overlay" id="noHymnOverlay">
+    <p>Open a hymn in the main window, then click <strong>Present</strong> to send it here.</p>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="hymn-utils.js"></script>
+<script src="control.js"></script>
+</body>
+</html>

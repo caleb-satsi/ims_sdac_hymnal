@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Congregation Display</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="presentation.css">
+</head>
+<body>
+
+<div id="stage">
+  <div class="stage__meta" id="stageMeta">
+    <span id="stageNum"></span>
+    <span id="stageTitle"></span>
+  </div>
+
+  <div class="stage__center">
+    <div class="stage__tag" id="stageTag"></div>
+    <p class="stage__text" id="stageText"></p>
+  </div>
+
+  <div class="stage__idle" id="stageIdle">
+    <p>Waiting for the presenter to choose a hymn…</p>
+  </div>
+</div>
+
+<div class="blank-layer blank-layer--black" id="blankBlack"></div>
+<div class="blank-layer blank-layer--white" id="blankWhite"></div>
+
+<script src="data.js"></script>
+<script src="hymn-utils.js"></script>
+<script src="presentation.js"></script>
+</body>
+</html>

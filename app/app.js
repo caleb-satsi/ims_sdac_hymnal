@@ -66,6 +66,7 @@
     detailLyrics: document.getElementById("detailLyrics"),
     detailFooter: document.getElementById("detailFooter"),
     detailFavBtn: document.getElementById("detailFavBtn"),
+    detailPresentBtn: document.getElementById("detailPresentBtn"),
     prevHymnBtn: document.getElementById("prevHymnBtn"),
     nextHymnBtn: document.getElementById("nextHymnBtn"),
     detailFontDecrease: document.getElementById("detailFontDecrease"),
@@ -298,6 +299,17 @@
     el.detailFavBtn.classList.toggle("is-fav", isFav(state.detailId));
   });
 
+  el.detailPresentBtn.addEventListener("click", function () {
+    if (!window.hymnalBridge || state.detailId == null) return;
+    var original = el.detailPresentBtn.innerHTML;
+    window.hymnalBridge.openPresentation(state.detailId).then(function (result) {
+      if (result && !result.hasSecondDisplay) {
+        el.detailPresentBtn.querySelector("span").textContent = "No 2nd display found";
+        setTimeout(function () { el.detailPresentBtn.innerHTML = original; }, 2200);
+      }
+    });
+  });
+
   el.prevHymnBtn.addEventListener("click", function () {
     var idx = Number(el.prevHymnBtn.dataset.idx);
     if (idx >= 0 && HYMNS[idx]) openDetail(HYMNS[idx].id, state.cameFromTab);
@@ -342,6 +354,9 @@
   });
 
   // ---------------- Boot ----------------
+  if (!window.hymnalBridge) {
+    el.detailPresentBtn.hidden = true;
+  }
   setDark(!!store.dark);
   setFontSize(store.fontSize || 17);
   renderHymnList();

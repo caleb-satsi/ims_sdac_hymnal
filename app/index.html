@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>IMS SDAC Hymnal</title>
+<title>International Hymnal (SDAC)</title>
 <meta name="theme-color" content="#153656">
 <link rel="icon" href="favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -23,8 +23,8 @@
         <svg viewBox="0 0 24 24" width="22" height="22"><path d="M15 4l-8 8 8 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
       <div class="cover-bar__title">
-        <span class="crest">📖</span>
-        <h1>IMS SDAC Hymnal</h1>
+        <span class="crest">✦</span>
+        <h1>International Hymnal (SDAC)</h1>
       </div>
       <button class="icon-btn" id="btnDownload" aria-label="About" title="About this hymnal">
         <svg viewBox="0 0 24 24" width="20" height="20"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><line x1="12" y1="11" x2="12" y2="17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="7.6" r="1" fill="currentColor"/></svg>
@@ -63,7 +63,7 @@
       </div>
       <ul class="hymn-list" id="favoriteList"></ul>
       <div class="empty-state" id="emptyFavorites" hidden>
-        <span class="empty-state__glyph">❤️</span>
+        <span class="empty-state__glyph">✦</span>
         <p>You haven't kept any hymns yet.<br>Tap the star on a hymn to place a bookmark here.</p>
       </div>
     </section>
@@ -72,7 +72,7 @@
     <section id="view-settings" class="view">
       <div class="section-heading">
         <h2>Settings</h2>
-        <p>Resize the hymnal to your size.</p>
+        <p>Tune the hymnal to your reading.</p>
       </div>
 
       <div class="settings-card">
@@ -103,9 +103,9 @@
         <h2>About</h2>
       </div>
       <div class="settings-card about-card">
-        <p><strong>IMS SDAC Hymnal — Web Edition</strong></p>
+        <p><strong>International Hymnal (SDAC) — Desktop Edition</strong></p>
         <p id="aboutCounts">784 hymns · 48 categories</p>
-        <p class="about-note">A browser-based edition of the IMS SDAC Hymnal, rebuilt from the original Flutter app's hymn archive for reading anywhere — no install required. Lyrics, authorship notes, and tunings are preserved as catalogued.</p>
+        <p class="about-note">A digital hymnal for reading and searching hymns offline. Browse by category or search by number, title, or author, save favorites for quick access, and adjust text size or switch to dark mode for comfortable reading.</p>
       </div>
     </section>
 
@@ -114,9 +114,15 @@
       <div class="page" id="detailPage">
         <div class="page__topline">
           <div class="plate" id="detailNumber">1</div>
-          <button class="star-btn" id="detailFavBtn" aria-label="Toggle favorite">
-            <svg viewBox="0 0 24 24" width="24" height="24"><path d="M12 2.8l2.85 6.4 6.98.62-5.3 4.62 1.6 6.86L12 17.7l-6.13 3.6 1.6-6.86-5.3-4.62 6.98-.62L12 2.8z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
-          </button>
+          <div class="page__topline-actions">
+            <button class="present-btn" id="detailPresentBtn" aria-label="Present to congregation" title="Present to congregation">
+              <svg viewBox="0 0 24 24" width="18" height="18"><rect x="2.5" y="4.5" width="19" height="12" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8.5 20.5h7M12 16.5v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              <span>Present</span>
+            </button>
+            <button class="star-btn" id="detailFavBtn" aria-label="Toggle favorite">
+              <svg viewBox="0 0 24 24" width="24" height="24"><path d="M12 2.8l2.85 6.4 6.98.62-5.3 4.62 1.6 6.86L12 17.7l-6.13 3.6 1.6-6.86-5.3-4.62 6.98-.62L12 2.8z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
         </div>
         <h2 class="page__title" id="detailTitle">Hymn title</h2>
         <p class="page__meta" id="detailMeta"></p>
